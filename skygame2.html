@@ -1,0 +1,815 @@
+<!DOCTYPE htm<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trò Chơi Câu Hỏi</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+            background-color: #d3d3d3;
+        }
+    #startScreen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background-image: url(images/game2/backgroundstartgame2.png);
+    background-size: cover; /* Đảm bảo hình ảnh phủ toàn bộ màn hình */
+    background-position: center; /* Căn giữa hình ảnh */
+    color: white;
+    font-size: 24px;
+    flex-direction: column;
+}
+	#victoryScreen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background-image: url('images/game2/backgroundvictorygam2.png');
+    background-size: cover; /* Đảm bảo hình ảnh phủ toàn bộ màn hình */
+    background-position: center; /* Căn giữa hình ảnh */
+    color: white;
+    font-size: 24px;
+    flex-direction: column;
+}
+	#gameOver {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background-image: url('images/game2/backgroundendgame2.png');
+    background-size: cover; /* Đảm bảo hình ảnh phủ toàn bộ màn hình */
+    background-position: center; /* Căn giữa hình ảnh */
+    color: white;
+    font-size: 24px;
+    flex-direction: column;
+}
+		#linkButtonStart {
+      position: absolute;
+		top: 380px;
+		left: 730px;
+           padding: 10px 20px;
+           font-size: 16px;
+           color: #fff;
+           background-color: #007BFF;
+           border: none;
+           border-radius: 5px;
+           cursor: pointer;
+           transition: background-color 0.3s;
+        }
+		#linkButtonvictory, #linkButtongameover, #linkButtonspecialvictory {
+      position: absolute;
+			top: 380px;
+			left: 670px;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #startButton {
+      position: absolute;
+			top: 380px;
+			left: 630px;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #startButton:hover, #linkButtonStart:hover, #linkButton:hover,#linkButtonvictory:hover, linkButtongameover:hover, linkButtonspecialvictory:hover {
+            background-color: #45a049;
+        }
+        #questionBox {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 2px solid black;
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        #questionBox button {
+            display: block;
+            margin: 10px auto;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            width: 80%;
+        }
+        #questionBox button:hover {
+            background-color: #45a049;
+        }
+        #scoreBox {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-size: 20px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #timeBox {
+            position: absolute;
+            top: 65px; /* Cập nhật khoảng cách */
+            left: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-size: 20px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #specialvictory {
+    		display: flex;
+    		justify-content: center;
+    		align-items: center;
+    		position: absolute;
+    		top: 50%;
+    		left: 50%;
+    		transform: translate(-50%, -50%);
+    		width: 100%;
+    		height: 100%;
+    		background-color: #333;
+    		color: white;
+    		font-size: 24px;
+    		flex-direction: column;
+}
+    </style>
+</head>
+<body>
+    <div id="startScreen">
+        <button id="startButton">Bắt đầu</button>
+		<button id="linkButtonStart">Trang chủ</button>
+    </div>
+    <div id="victoryScreen" style="display: none;">
+	<button id="linkButtonvictory">Trang chủ</button>
+    </div>
+    <div id="gameOver" style="display: none;">
+	<button id="linkButtongameover">Trang chủ</button>
+    </div>
+    <div id="specialvictory" style="display: none;">
+    <h1>Kết thúc đặc biệt: Trò chơi kết thúc!</h1>
+	<button id="linkButtonspecialvictory">Trang chủ</button>
+</div>
+<script>
+        document.getElementById('linkButtonStart').addEventListener('click', () => {
+            window.location.href = 'screen0.html'; // Thay bằng đường dẫn tương đối thực tế
+        });
+		document.getElementById('linkButtongameover').addEventListener('click', () => {
+            window.location.href = 'screen0.html'; // Thay bằng đường dẫn tương đối thực tế
+        });
+		document.getElementById('linkButtonvictory').addEventListener('click', () => {
+            window.location.href = 'screen0.html'; // Thay bằng đường dẫn tương đối thực tế
+        });
+		document.getElementById('linkButtonspecialvictory').addEventListener('click', () => {
+            window.location.href = 'screen0.html'; // Thay bằng đường dẫn tương đối thực tế
+        });
+    </script>
+    <canvas id="gameCanvas"></canvas>
+    <div id="questionBox">
+        <p id="questionText">Câu hỏi sẽ xuất hiện ở đây</p>
+        <button onclick="answerQuestion(0)">Đáp án 1</button>
+        <button onclick="answerQuestion(1)">Đáp án 2</button>
+        <button onclick="answerQuestion(2)">Đáp án 3</button>
+        <button onclick="answerQuestion(3)">Đáp án 4</button>
+    </div>
+    <div id="scoreBox">Điểm: 0</div>
+    <div id="timeBox">Thời gian: 0s</div>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const startScreen = document.getElementById('startScreen');
+        const victoryScreen = document.getElementById('victoryScreen');
+        const gameOverScreen = document.getElementById('gameOver');
+        const scoreBox = document.getElementById('scoreBox');
+         const timeBox = document.getElementById('timeBox');
+
+        const player = {
+    x: 400,
+    y: 300,
+    width: 70,
+    height: 70,
+    speed: 5,
+    flipped: false, // Trạng thái lật hình ảnh (false là bình thường, true là lật)
+    image: new Image() // Thêm hình ảnh cho nhân vật
+};
+window.addEventListener('keydown', (e) => {
+    if (e.key.toLowerCase() === 'd') {
+        player.flipped = true; // Lật nhân vật khi nhấn phím "d"
+    }
+    if (e.key.toLowerCase() === 'a') {
+        player.flipped = false; // Quay lại trạng thái bình thường khi nhấn phím "s"
+    }
+});
+window.addEventListener('keyup', (e) => {
+    if (e.key.toLowerCase() === 'd' || e.key.toLowerCase() === 's') {
+        // Không cần làm gì thêm khi thả phím
+    }
+});
+player.image.src = 'images/game2/character.png';
+player.image.onload = () => player.imageLoaded = true;
+		const backgroundImage = new Image(); // Khởi tạo đối tượng hình ảnh
+let isBackgroundLoaded = false; // Biến kiểm tra hình nền đã tải xong hay chưa
+
+// Tải hình ảnh nền
+backgroundImage.src ='images/game2/backgroundgame2.png'; // Đường dẫn tới file hình ảnh
+backgroundImage.onload = () => {
+    isBackgroundLoaded = true; // Đánh dấu rằng hình nền đã sẵn sàng
+};
+
+// Hàm vẽ hình nền
+function drawBackground() {
+    if (isBackgroundLoaded) {
+        // Căn chỉnh ảnh nền sao cho phủ toàn bộ canvas
+        ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height); 
+    } else {
+        // Nếu ảnh chưa tải xong, vẽ một nền màu xám tạm thời
+        ctx.fillStyle = "#808080"; // Màu xám
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#fff"; // Màu chữ trắng
+        ctx.font = "20px Arial"; // Đặt kiểu chữ
+    }
+}
+        const enemies = [];
+        const enemySpeedBase = 4;
+        let enemySpeed = enemySpeedBase;
+        let score = 0;
+        let currentQuestion = null;
+        let gamePaused = false;
+        let gameEnded = false;
+        let explosionRadius = 0;
+        let explosionActive = false;
+        const camera = { x: 0, y: 0 };
+        let maxExplosionRadius = 0;
+        let explosionStartTime = null;
+
+        const mapWidth = 2000; // Kích thước bản đồ lớn hơn canvas
+        const mapHeight = 2000;
+
+        const obstacles = []; // Mảng lưu trữ chướng ngại vật
+
+        document.getElementById('startButton').addEventListener('click', () => {
+            startScreen.style.display = 'none';
+            canvas.style.display = 'block';
+            spawnObstacles();  // Sinh ra các chướng ngại vật khi bắt đầu trò chơi
+            gameLoop();
+        });
+
+        function spawnEnemy() {
+    if (gameEnded) return;
+
+    const side = Math.floor(Math.random() * 4);
+    let x, y;
+    switch (side) {
+        case 0: x = Math.random() * mapWidth; y = -20; break;
+        case 1: x = Math.random() * mapWidth; y = mapHeight + 20; break;
+        case 2: x = -20; y = Math.random() * mapHeight; break;
+        case 3: x = mapWidth + 20; y = Math.random() * mapHeight; break;
+    }
+
+    const enemyImage = new Image();
+    enemyImage.src = 'images/game2/enemy.png'; // Đường dẫn đến ảnh kẻ địch
+
+    enemies.push({
+        x: x,
+        y: y,
+        width: 70,
+        height: 70,
+        image: enemyImage // Thêm hình ảnh vào mỗi kẻ địch
+    });
+}
+
+ function spawnObstacles() {
+    const playerX = 400;
+    const playerY = 300;
+    
+    for (let i = 0; i < 10; i++) {
+        // Kích thước cố định: 100x100 hoặc 200x100
+        const sizeOptions = [
+            { width: 150, height: 100 },
+            { width: 200, height: 100 }
+        ];
+        const size = sizeOptions[Math.floor(Math.random() * sizeOptions.length)];
+        
+        let x, y;
+        
+        // Kiểm tra vị trí ngẫu nhiên cho đến khi không trùng với vị trí người chơi
+        do {
+            x = Math.random() * (mapWidth - size.width);
+            y = Math.random() * (mapHeight - size.height);
+        } while (Math.abs(x - playerX) < size.width && Math.abs(y - playerY) < size.height);
+        
+        // Thêm chướng ngại vật vào danh sách
+        obstacles.push({
+            x,
+            y,
+            width: size.width,
+            height: size.height,
+        });
+    }
+}
+        window.addEventListener('keydown', (e) => {
+    if (e.key.toLowerCase() === 'r') {
+        location.reload(); // Làm mới trang web
+    }
+});
+
+// Hoặc kết hợp với các xử lý phím khác
+const keys = {};
+window.addEventListener('keydown', (e) => {
+    keys[e.key.toLowerCase()] = true;
+
+    // Kiểm tra nếu phím R được nhấn
+    if (e.key.toLowerCase() === 'r') {
+        location.reload(); // Làm mới trang web
+    }
+});
+window.addEventListener('keyup', (e) => keys[e.key.toLowerCase()] = false);
+
+window.addEventListener('keyup', (e) => keys[e.key.toLowerCase()] = false);
+
+       function movePlayer() {
+    if (gamePaused || gameEnded) return;
+
+    let moveX = 0;
+    let moveY = 0;
+
+    if (keys['w']) moveY = -player.speed;
+    if (keys['s']) moveY = player.speed;
+    if (keys['a']) moveX = -player.speed;
+    if (keys['d']) moveX = player.speed;
+
+    const newX = player.x + moveX;
+    const newY = player.y + moveY;
+
+    // Kiểm tra va chạm với chướng ngại vật
+    if (!checkCollision(newX, player.y) && !checkCollision(player.x, newY)) {
+        // Giới hạn vị trí người chơi không ra ngoài bản đồ
+        player.x = Math.max(0, Math.min(newX, mapWidth - player.width));
+        player.y = Math.max(0, Math.min(newY, mapHeight - player.height));
+    }
+
+    // Cập nhật camera để luôn theo dõi nhân vật
+    camera.x = player.x - canvas.width / 2 + player.width / 2;
+    camera.y = player.y - canvas.height / 2 + player.height / 2;
+
+    // Đảm bảo camera không di chuyển ra ngoài phạm vi bản đồ
+    camera.x = Math.max(0, Math.min(camera.x, mapWidth - canvas.width));
+    camera.y = Math.max(0, Math.min(camera.y, mapHeight - canvas.height));
+}
+
+        // Kiểm tra va chạm với chướng ngại vật
+        function checkCollision(x, y) {
+            for (const obs of obstacles) {
+                if (x < obs.x + obs.width &&
+                    x + player.width > obs.x &&
+                    y < obs.y + obs.height &&
+                    y + player.height > obs.y) {
+                    return true;  // Va chạm với chướng ngại vật
+                }
+            }
+            return false;
+        }
+
+        function moveEnemies() {
+    if (gamePaused || gameEnded) return;
+
+    enemies.forEach((enemy, index) => {
+        const dx = player.x - enemy.x;
+        const dy = player.y - enemy.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (isColliding(player, enemy)) {
+            showQuestion();
+        }
+
+        if (explosionActive) {
+            const distanceToExplosion = Math.sqrt((enemy.x - player.x) ** 2 + (enemy.y - player.y) ** 2);
+            if (distanceToExplosion <= explosionRadius) {
+                enemies.splice(index, 1);  // Tiêu diệt kẻ địch khi chúng nằm trong vòng tròn
+            }
+        }
+
+        enemy.x += (dx / distance) * enemySpeed;
+        enemy.y += (dy / distance) * enemySpeed;
+
+        // Kiểm tra va chạm với chướng ngại vật
+        if (checkCollision(enemy.x, enemy.y)) {
+            enemies.splice(index, 1);  // Bot bị tiêu diệt khi va chạm với chướng ngại vật
+        }
+    });
+}
+        function isColliding(a, b) {
+            return (
+                a.x < b.x + b.width &&
+                a.x + a.width > b.x &&
+                a.y < b.y + b.height &&
+                a.y + a.height > b.y
+            );
+        }
+const questions = [
+    { text: "Khi nhận tin nhắn từ người lạ, em nên làm gì?", options: ["Trả lời ngay", "Báo với người lớn", "Chia sẻ thông tin cá nhân", "Kết bạn"], correct: 1 },
+    { text: "Không nên chia sẻ điều gì trên mạng?", options: ["Thành tích học tập", "Địa chỉ nhà", "Hình ảnh đẹp", "Truyện vui"], correct: 1 },
+    { text: "Tại sao không bấm vào link lạ?", options: ["Vì dài quá", "Vì có thể chứa virus", "Vì không hấp dẫn", "Vì không biết ai gửi"], correct: 1 },
+    { text: "Mật khẩu an toàn là gì?", options: ["Ngày sinh", "Tên em", "Dãy ký tự phức tạp", "123456"], correct: 2 },
+    { text: "Khi bị xúc phạm trên mạng, em làm gì?", options: ["Phớt lờ", "Báo người lớn", "Đáp trả lại", "Gửi bạn bè xem"], correct: 1 },
+    { text: "Điều cần tránh khi chơi game online?", options: ["Kết bạn mới", "Chia sẻ thông tin cá nhân", "Thảo luận trò chơi", "Nói về chiến thuật"], correct: 1 },
+    { text: "Thấy nội dung xấu, em nên làm gì?", options: ["Báo cáo", "Bỏ qua", "Chia sẻ", "Bình luận chỉ trích"], correct: 0 },
+    { text: "Tại sao cần kiểm tra nguồn tin?", options: ["Để không lan tin giả", "Để tăng lượt xem", "Vì ai cũng kiểm tra", "Để chia sẻ nhanh hơn"], correct: 0 },
+    { text: "Ứng dụng yêu cầu truy cập ảnh, em nên làm gì?", options: ["Đồng ý ngay", "Từ chối nếu không cần thiết", "Chia sẻ tất cả", "Gỡ cài đặt"], correct: 1 },
+    { text: "Phishing là gì?", options: ["Một loại virus", "Lừa đảo lấy thông tin", "Một trò chơi", "Một công cụ học tập"], correct: 1 },
+    { text: "Ai là người đầu tiên em báo khi gặp nguy hiểm mạng?", options: ["Bạn bè", "Người lớn", "Người lạ", "Không cần báo ai"], correct: 1 },
+    { text: "Khi dùng máy tính công cộng, em nên làm gì?", options: ["Đăng xuất sau khi dùng", "Lưu mật khẩu", "Tải ứng dụng", "Gửi thông tin quan trọng"], correct: 0 },
+    { text: "Người lạ hứa tặng quà, em làm gì?", options: ["Nhận ngay", "Báo với người lớn", "Chia sẻ thông tin", "Tự tìm hiểu"], correct: 1 },
+    { text: "Tại sao không dùng Wi-Fi công cộng để đăng nhập?", options: ["Vì chậm", "Vì dễ bị hack", "Vì không miễn phí", "Vì không cần"], correct: 1 },
+    { text: "Trang web không an toàn có dấu hiệu gì?", options: ["Không 'https'", "Nhiều quảng cáo", "Thiếu biểu tượng ổ khóa", "Cả 3 đáp án trên"], correct: 3 },
+    { text: "Khi bị yêu cầu gửi ảnh riêng tư, em làm gì?", options: ["Gửi ngay", "Từ chối và báo người lớn", "Hỏi ý kiến bạn bè", "Lưu ảnh để sau"], correct: 1 },
+    { text: "Có ai đó mạo danh bạn em, em làm gì?", options: ["Hỏi thẳng", "Báo cáo tài khoản đó", "Tiếp tục trò chuyện", "Chặn họ"], correct: 1 },
+    { text: "Tại sao không nên đăng mọi chuyện cá nhân lên mạng?", options: ["Dễ bị kẻ xấu lợi dụng", "Không ai quan tâm", "Tốn thời gian", "Gây phiền phức"], correct: 0 },
+    { text: "Chọn mật khẩu thế nào là sai?", options: ["Tên người thân", "Chuỗi ký tự ngẫu nhiên", "Ký tự dài và phức tạp", "Không liên quan thông tin cá nhân"], correct: 0 },
+    { text: "Hành động nào an toàn nhất khi lướt mạng?", options: ["Kiểm tra thông tin trước khi chia sẻ", "Chia sẻ mọi thứ ngay lập tức", "Trả lời tin nhắn lạ", "Tham gia các đường link mời gọi"], correct: 0 },
+    { text: "Khi nhận được tin nhắn từ người lạ trên mạng, em nên làm gì?", options: ["Trả lời ngay lập tức", "Chia sẻ thông tin cá nhân", "Báo với người lớn và không trả lời", "Kết bạn với người đó"], correct: 2 },
+    { text: "Điều gì em không nên chia sẻ trên mạng xã hội?", options: ["Thành tích học tập", "Địa chỉ nhà và số điện thoại", "Hình ảnh đẹp của mình", "Chuyện vui với bạn bè"], correct: 1 },
+    { text: "Tại sao không nên click vào đường link lạ nhận được qua email hoặc tin nhắn?", options: ["Vì chúng có thể chứa virus hoặc lừa đảo", "Vì đường link đó dài quá", "Vì nó không hấp dẫn", "Vì không phải bạn bè gửi"], correct: 0 },
+    { text: "Mật khẩu an toàn nhất là gì?", options: ["Tên của em", "Ngày sinh của em", "Một chuỗi ký tự dài, khó đoán, bao gồm cả số và ký tự đặc biệt", "123456"], correct: 2 },
+    { text: "Nếu ai đó gửi tin nhắn đe dọa hoặc xúc phạm, em nên làm gì?", options: ["Phớt lờ và xóa tin nhắn", "Báo với người lớn và chụp lại màn hình làm bằng chứng", "Trả lời để phản bác lại họ", "Gửi cho bạn bè xem"], correct: 1 },
+    { text: "Chơi game trực tuyến với người lạ, em nên tránh điều gì?", options: ["Kết bạn với họ", "Nói về các chiến thuật chơi", "Chia sẻ thông tin cá nhân", "Thảo luận về trò chơi"], correct: 2 },
+    { text: "Khi thấy một nội dung không phù hợp trên mạng, em nên làm gì?", options: ["Báo cáo (report) nội dung đó", "Bỏ qua và tiếp tục lướt mạng", "Chia sẻ cho bạn bè xem", "Bình luận để chỉ trích"], correct: 0 },
+    { text: "Tại sao cần kiểm tra nguồn tin trước khi chia sẻ?", options: ["Để không lan truyền tin giả", "Vì mọi thông tin trên mạng đều đúng", "Vì không ai quan tâm đến tin đó", "Để tăng lượt xem"], correct: 0 },
+    { text: "Em nên làm gì khi một ứng dụng yêu cầu truy cập ảnh và danh bạ của em?", options: ["Đồng ý ngay để sử dụng ứng dụng", "Từ chối nếu không cần thiết", "Chia sẻ tất cả vì không có gì quan trọng", "Gỡ cài đặt ứng dụng"], correct: 1 },
+    { text: "Phishing là gì?", options: ["Một cách chơi game", "Một loại virus máy tính", "Một hình thức lừa đảo qua mạng để lấy thông tin cá nhân", "Một công cụ học tập"], correct: 2 },
+    { text: "Ai là người đầu tiên em nên báo khi gặp nguy hiểm trên mạng?", options: ["Bạn bè thân thiết", "Bố mẹ hoặc thầy cô", "Người lạ trực tuyến", "Không cần báo ai"], correct: 1 },
+    { text: "Khi sử dụng máy tính ở nơi công cộng, em cần lưu ý điều gì?", options: ["Lưu mật khẩu vào trình duyệt", "Đăng xuất tài khoản sau khi sử dụng", "Chia sẻ thông tin quan trọng qua email", "Tải xuống nhiều ứng dụng"], correct: 1 },
+    { text: "Khi ai đó hứa tặng quà qua mạng nếu em cung cấp thông tin cá nhân, em nên làm gì?", options: ["Chấp nhận ngay để nhận quà", "Chia sẻ thông tin của mình", "Báo với người lớn và không cung cấp thông tin", "Tự tìm hiểu xem họ là ai"], correct: 2 },
+    { text: "Tại sao không nên sử dụng mạng Wi-Fi công cộng để đăng nhập tài khoản quan trọng?", options: ["Vì nó thường chậm", "Vì nó có thể bị hacker xâm nhập và đánh cắp thông tin", "Vì nó không miễn phí", "Vì không ai dùng"], correct: 1 },
+    { text: "Những dấu hiệu nào cho thấy một trang web không an toàn?", options: ["Địa chỉ không bắt đầu bằng 'https'", "Trang web có quá nhiều quảng cáo", "Thiếu biểu tượng ổ khóa bên cạnh URL", "Cả a, b và c"], correct: 3 }
+];
+       function showQuestion() {
+    gamePaused = true;
+
+    // Lấy câu hỏi ngẫu nhiên
+    const randomIndex = Math.floor(Math.random() * questions.length);
+    currentQuestion = questions[randomIndex];
+
+    // Cập nhật nội dung câu hỏi và các đáp án
+    document.getElementById('questionText').innerText = currentQuestion.text;
+    const buttons = document.querySelectorAll('#questionBox button');
+    currentQuestion.options.forEach((option, index) => {
+        buttons[index].innerText = option;
+    });
+
+    // Hiển thị hộp câu hỏi
+    document.getElementById('questionBox').style.display = 'block';
+}
+        function answerQuestion(index) {
+            if (index === currentQuestion.correct) {
+                score++;
+                updateScore();
+                for (let i = enemies.length - 1; i >= 0; i--) {
+                    const enemy = enemies[i];
+                    const dx = player.x - enemy.x;
+                    const dy = player.y - enemy.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < 200) {
+                        enemies.splice(i, 1);
+                        maxExplosionRadius = Math.PI * 200 * 200;
+                        activateExplosion();
+                    }
+                }
+                if (score >= 20) {
+                    victory();
+                }
+            } else {
+                gameOver();
+            }
+            setTimeout(() => {
+                document.getElementById('questionBox').style.display = 'none';
+            }, 100);
+            gamePaused = false;
+        }
+
+        function activateExplosion() {
+            explosionActive = true;
+            explosionStartTime = Date.now();
+            explosionRadius = 0;
+            setTimeout(() => {
+                explosionActive = false;
+            }, 1000);
+        }
+
+        function updateScore() {
+            scoreBox.innerText = `Điểm: ${score}`;
+        }
+
+        function gameOver() {
+            gameOverScreen.style.display = 'flex';
+            gamePaused = true;
+        }
+
+        function victory() {
+            victoryScreen.style.display = 'flex';
+            canvas.style.display = 'none';
+            gamePaused = true;
+            gameEnded = true;
+        }
+    function gameLoop() {
+    if (!gamePaused && !gameEnded) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+		drawBackground();
+        movePlayer();
+        moveEnemies();
+        drawPlayer();
+        drawEnemies();
+        drawObstacles();  // Vẽ các chướng ngại vật
+        if (explosionActive) {
+            drawExplosion();
+        }
+    }
+
+    checkSpecialGameOver(); // Kiểm tra điều kiện kết thúc đặc biệt
+    requestAnimationFrame(gameLoop);
+}
+// Khởi tạo trạng thái ban đầu
+player.verticallyFlipped = false; // Trạng thái lật dọc ban đầu
+player.rotationAngle = 0; // Góc xoay ban đầu (đơn vị: độ)
+
+// Lắng nghe sự kiện khi nhấn phím
+document.addEventListener('keydown', (event) => {
+    // Khi nhấn phím S -> Lật ảnh theo chiều dọc
+    if (event.key === 's') {
+        player.verticallyFlipped = true; // Lật ảnh dọc
+        player.rotationAngle = 0; // Không quay khi lật ảnh (góc quay là 0)
+    }
+
+    // Khi nhấn S và A -> Xoay trái 45 độ (nhưng chỉ khi không lật ảnh)
+    if (event.key === 's' && event.code === 'KeyA' && !player.verticallyFlipped) {
+        player.rotationAngle = -45;
+    }
+    // Khi nhấn S và D -> Xoay phải 45 độ (nhưng chỉ khi không lật ảnh)
+    else if (event.key === 's' && event.code === 'KeyD' && !player.verticallyFlipped) {
+        player.rotationAngle = 45;
+    }
+
+    // Khi nhấn W và A -> Xoay trái 45 độ (nhưng chỉ khi không lật ảnh)
+    else if (event.key === 'w' && event.code === 'KeyA' && !player.verticallyFlipped) {
+        player.rotationAngle = -45;
+    }
+    // Khi nhấn W và D -> Xoay phải 45 độ (nhưng chỉ khi không lật ảnh)
+    else if (event.key === 'w' && event.code === 'KeyD' && !player.verticallyFlipped) {
+        player.rotationAngle = 45;
+    }
+
+    // Khi nhấn W -> Không xoay, chỉ lật lên trên (không quay khi lật)
+    else if (event.key === 'w') {
+        player.rotationAngle = 0;
+    }
+
+    // Khi nhấn S -> Chỉ lật dọc mà không xoay
+    else if (event.key === 's') {
+        player.rotationAngle = 0; // Không xoay khi chỉ nhấn S
+    }
+    // Khi nhấn A -> Xoay sang trái (nếu không lật ảnh)
+    else if (event.key === 'a' && !player.verticallyFlipped) {
+        player.rotationAngle = -45;
+    }
+    // Khi nhấn D -> Xoay sang phải (nếu không lật ảnh)
+    else if (event.key === 'd' && !player.verticallyFlipped) {
+        player.rotationAngle = 45;
+    }
+});
+
+// Lắng nghe sự kiện khi nhả phím
+document.addEventListener('keyup', (event) => {
+    // Khi nhả phím S, bỏ lật ảnh dọc
+    if (event.key === 's') {
+        player.verticallyFlipped = false;
+    }
+
+    // Khi nhả phím A hoặc D, reset góc xoay về 0 (khi không nhấn phím tương ứng)
+    if (event.key === 'a' || event.key === 'd') {
+        player.rotationAngle = 0;
+    }
+});
+
+// Hàm vẽ nhân vật
+function drawPlayer() {
+    if (player.imageLoaded) {
+        ctx.save();
+
+        // Tính toán vị trí trung tâm của ảnh
+        const centerX = player.x + player.width / 2 - camera.x;
+        const centerY = player.y + player.height / 2 - camera.y;
+
+        // Dịch chuyển trục tọa độ đến trung tâm ảnh
+        ctx.translate(centerX, centerY);
+
+        // Xoay ảnh nếu có góc xoay (nếu không bị lật dọc)
+        ctx.rotate((player.rotationAngle * Math.PI) / 180);
+
+        // Lật ảnh nếu cần
+        const scaleY = player.verticallyFlipped ? -1 : 1;
+        ctx.scale(1, scaleY);
+
+        // Vẽ ảnh, điều chỉnh lại vị trí từ trung tâm
+        ctx.drawImage(
+            player.image,
+            -player.width / 2, // Đưa ảnh về góc trái trên từ trung tâm
+            -player.height / 2,
+            player.width,
+            player.height
+        );
+
+        ctx.restore();
+    } else {
+        // Vẽ placeholder nếu ảnh không tải được
+        ctx.fillStyle = 'blue';
+        ctx.fillRect(player.x - camera.x, player.y - camera.y, player.width, player.height);
+    }
+}
+function drawEnemies() {
+    enemies.forEach(enemy => {
+        if (enemy.image.complete && enemy.image.naturalWidth !== 0) {
+            ctx.save();
+
+            // Kiểm tra hướng để lật ngang dựa trên vị trí của người chơi
+            if (enemy.x + enemy.width / 2 < player.x) { 
+                // Nếu kẻ địch ở bên trái người chơi (hướng về bên phải)
+                ctx.scale(-1, 1); // Lật ngang
+                ctx.drawImage(
+                    enemy.image,
+                    -(enemy.x + enemy.width) + camera.x, // Lật vị trí theo trục X
+                    enemy.y - camera.y,
+                    enemy.width,
+                    enemy.height
+                );
+            } else {
+                // Nếu kẻ địch ở bên phải người chơi (hướng về bên trái)
+                ctx.drawImage(
+                    enemy.image,
+                    enemy.x - camera.x,
+                    enemy.y - camera.y,
+                    enemy.width,
+                    enemy.height
+                );
+            }
+
+            ctx.restore();
+        } else {
+            // Vẽ thay thế nếu không tải được ảnh kẻ địch
+            ctx.fillStyle = 'red';
+            ctx.fillRect(enemy.x - camera.x, enemy.y - camera.y, enemy.width, enemy.height);
+        }
+    });
+}
+const image200x100 = new Image();
+image200x100.src = 'images/game2/200x100.png'; // Đặt đường dẫn tới hình ảnh kích thước 200x100
+const image150x100 = new Image();
+image150x100.src = 'images/game2/150x100.png'; // Đặt đường dẫn tới hình ảnh kích thước 150x100
+// Cập nhật khi hình ảnh 200x100 đã tải xong
+image200x100.onload = function() {
+    console.log('Hình ảnh 200x100 đã tải xong');
+    drawObstacles();
+};
+// Cập nhật khi hình ảnh 150x100 đã tải xong
+image150x100.onload = function() {
+    console.log('Hình ảnh 150x100 đã tải xong');
+    drawObstacles();
+};
+function drawObstacles() {
+    obstacles.forEach(obstacle => {
+        // Kiểm tra chướng ngại vật 200x100
+        if (obstacle.width === 200 && obstacle.height === 100) {
+            // Vẽ hình ảnh 200x100 nếu đã tải xong
+            if (image200x100.complete && image200x100.naturalWidth !== 0) {
+                ctx.drawImage(image200x100, obstacle.x - camera.x, obstacle.y - camera.y, obstacle.width, obstacle.height);
+            } else {
+                // Nếu không có hình ảnh, vẽ hình chữ nhật mặc định
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.fillRect(obstacle.x - camera.x, obstacle.y - camera.y, obstacle.width, obstacle.height);
+            }
+        } 
+        // Kiểm tra chướng ngại vật 150x100
+        else if (obstacle.width === 150 && obstacle.height === 100) {
+            // Vẽ hình ảnh 150x100 nếu đã tải xong
+            if (image150x100.complete && image150x100.naturalWidth !== 0) {
+                ctx.drawImage(image150x100, obstacle.x - camera.x, obstacle.y - camera.y, obstacle.width, obstacle.height);
+            } else {
+                // Nếu không có hình ảnh, vẽ hình chữ nhật mặc định
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.fillRect(obstacle.x - camera.x, obstacle.y - camera.y, obstacle.width, obstacle.height);
+            }
+        } 
+        // Kiểm tra trường hợp khác
+        else {
+            // Vẽ hình chữ nhật mặc định cho các kích thước khác
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.fillRect(obstacle.x - camera.x, obstacle.y - camera.y, obstacle.width, obstacle.height);
+        }
+    });
+}
+        function drawExplosion() {
+            const playerCenterX = player.x + player.width / 2;
+            const playerCenterY = player.y + player.height / 2;
+
+            const elapsedTime = (Date.now() - explosionStartTime) / 1000;
+            const maxRadius = Math.sqrt(maxExplosionRadius / Math.PI);
+            explosionRadius = maxRadius * elapsedTime;
+
+            if (explosionRadius > maxRadius) {
+                explosionRadius = maxRadius;
+            }
+
+            ctx.beginPath();
+            ctx.arc(playerCenterX - camera.x, playerCenterY - camera.y, explosionRadius, 0, 2 * Math.PI);
+            ctx.fillStyle = 'rgba(173, 216, 230, 0.5)';
+            ctx.fill();
+        }
+				let timeElapsed = 0; // Khai báo biến timeElapsed
+let timeInterval; // Biến lưu trữ ID của setInterval để dừng lại sau
+
+function startTimeTracking() {
+    // Sử dụng setInterval để theo dõi thời gian mỗi giây
+    timeInterval = setInterval(() => {
+        if (!gamePaused) {
+            timeElapsed++; // Cập nhật thời gian
+            timeBox.innerText = `Thời gian: ${timeElapsed}s`; // Hiển thị thời gian lên giao diện
+        }
+    }, 1000);
+}
+
+function stopTimeTracking() {
+    // Dừng theo dõi thời gian khi trò chơi kết thúc
+    clearInterval(timeInterval);
+}
+        const specialGameOverScreen = document.getElementById('specialGameOver'); // Màn hình kết thúc đặc biệt
+// Hàm kiểm tra điều kiện kết thúc đặc biệt
+function checkSpecialGameOver() {
+    if (timeElapsed >= 180 && score === 0) { 
+        document.getElementById('specialGameOver').style.display = 'flex'; // Hiện màn hình đặc biệt
+        canvas.style.display = 'none';
+        gamePaused = true;
+        gameEnded = true;
+        stopTimeTracking(); // Dừng thời gian
+    }
+}
+function gameOver() {
+    gameOverScreen.style.display = 'flex';
+    gamePaused = true;
+    stopTimeTracking(); // Dừng thời gian khi game kết thúc
+}
+
+function victory() {
+    victoryScreen.style.display = 'flex';
+    canvas.style.display = 'none';
+    gamePaused = true;
+    gameEnded = true;
+    stopTimeTracking(); // Dừng thời gian khi game kết thúc
+}
+document.getElementById('startButton').addEventListener('click', () => {
+    startScreen.style.display = 'none';
+    canvas.style.display = 'block';
+    spawnObstacles();  // Sinh ra các chướng ngại vật khi bắt đầu trò chơi
+    startTimeTracking(); // Bắt đầu theo dõi thời gian
+    gameLoop();
+});
+        setInterval(spawnEnemy, 1000);
+		
+    </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Web Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* Đảm bảo chiều cao toàn màn hình */
+            background-image: url('images/background.png'); /* Đường dẫn tương đối đến ảnh nền */
+            background-size: cover; /* Ảnh phủ toàn bộ nền */
+            background-repeat: no-repeat; /* Không lặp ảnh */
+            background-position: center; /* Căn giữa ảnh */
+        }
+
+        .button {
+            position: absolute;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        #button1 {
+            position: absolute;
+            top: 72%;
+            left: 45%;
+            transform: translate(-50%, -50%);
+        }
+
+        #button2 {
+            position: absolute;
+            top: 72%;
+            left: 55%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+    <button id="button1" class="button" onclick="window.location.href='oceangame1.html'">Đại Dương</button>
+    <button id="button2" class="button" onclick="window.location.href='skygame2.html'">Bầu Trời</button>
+
+    <script>
+        function setBackground(imageUrl) {
+            document.body.style.backgroundImage = `url('${imageUrl}')`;
+        }
+
+        function setButtonProperties(buttonId, properties) {
+            const button = document.getElementById(buttonId);
+            if (!button) return;
+            for (const [key, value] of Object.entries(properties)) {
+                button.style[key] = value;
+            }
+        }
+    </script>
+</body>
+</html>
